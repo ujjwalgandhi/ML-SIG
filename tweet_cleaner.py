@@ -12,12 +12,12 @@ class Cleaner:
 		self.tweet = tweet
 
 	def emotion_remover(self):
-		pattern = re.compile(r'::\s\w+\d+:')
+		pattern = re.compile(r'[::\s][\w]+\d+:')
 		matches = pattern.finditer()
 
 		for match in matches:
 			#emotion = match.group()
-			tweet = pattern.sub(r'', tweet)
+			tweet = pattern.sub(r'\2', tweet)
 
 	def name_remover(self):
 		names = []
@@ -31,16 +31,27 @@ class Cleaner:
 
 	def emoji_remover(self):
 		pattern = re.compile(r'[:;)]+')
+		matches = pattern.finditer
+
+		for match in matches:
+			tweet = pattern.sub(r'', tweet)
 
 
 	def hashtag_editor(self):
+		#Finder for TextLikeThis
 		pattern = re.compile(r'[A-Z]?[a-z]*[^A-Z]')
-		matches = pattern.finditer(tweet_unclean)
+		matches = pattern.finditer(tweet)
+
 		for match in matches:
-			print(match)
+			pass
+			#To be done
 
 	def space_remover(self):
-		pass		
+		pattern = re.compile(r'\s+')
+		matches = pattern.finditer(tweet)
+
+		for match in matches:
+			tweet = pattern.sub(r' ')
 
 	def tweet_cleaner(self):
 		name_remover()
@@ -50,4 +61,7 @@ class Cleaner:
 
 with open('tweets_unclean.txt', 'r') as read_file:
 	with open('tweets_clean.txt', 'w') as write_file:
-		pass
+		for line in read_file:
+			instance = Cleaner(line)
+			instance.tweet_cleaner
+			write_file.write('{}\n'.format(line))
