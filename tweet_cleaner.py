@@ -1,27 +1,39 @@
-
-
+#Tweet Cleaner
+#Removes @mention, replaces it with "*NAME*".
+#Removes the hashtags and edits the text with it (not fully implemented, work in progress)
+#Removes the emojis, extra spaces and twitter emotions.
+#Converts into a clean, readable format
 
 import re
 
 class Cleaner:
 
-	def __init__(self, read_file, write_file):
-		self.read_file = read_file
-		self.write_file = write_file
-		self.tweet_clean = None
+	def __init__(self, tweet):
+		self.tweet = tweet
 
-	def emotion_remover(self, tweet_unclean):
+	def emotion_remover(self):
 		pattern = re.compile(r'::\s\w+\d+:')
 		matches = pattern.finditer()
 
-	def name_remover(self, tweet_unclean):
+		for match in matches:
+			#emotion = match.group()
+			tweet = pattern.sub(r'', tweet)
+
+	def name_remover(self):
+		names = []
 		pattern = re.compile(r'@[A-Za-z0-9_]+')
 		matches = pattern.finditer()
 
-	def emoji_remover(self, tweet_unclean):
-		pass	
+		for match in matches:
+			name = match.group()[1:]
+			if not name in names:
+				names.append(name)
 
-	def hashtag_editor(self, tweet_unclean):
+	def emoji_remover(self):
+		pattern = re.compile(r'[:;)]+')
+
+
+	def hashtag_editor(self):
 		pattern = re.compile(r'[A-Z]?[a-z]*[^A-Z]')
 		matches = pattern.finditer(tweet_unclean)
 		for match in matches:
@@ -31,15 +43,11 @@ class Cleaner:
 		pass		
 
 	def tweet_cleaner(self):
-		with open(self.read_file, 'r') as read_file:
-			with open(self.write_file, 'w') as write_file:
-				for line in read_file:
-					#starts from the 20th character
-					name_remover(self, line)
-					self.hashtag_editor(line)
-					self.emoji_remover(line)
-					self.space_remover(line)
-					write_file.write('{}\n'.format(self.tweet_clean))
+		name_remover()
+		hashtag_editor()
+		emoji_remover()
+		space_remover()
 
-test_task = Cleaner('tweets_unclean.txt', 'tweets_clean.txt')
-test_task.tweet_cleaner()
+with open('tweets_unclean.txt', 'r') as read_file:
+	with open('tweets_clean.txt', 'w') as write_file:
+		pass
